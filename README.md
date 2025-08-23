@@ -41,6 +41,7 @@ This project is a complete, containerized ticket system designed for internal en
 The project is a monorepo with two main packages:
 
 - `backend/`: The FastAPI application.
+- `backend_dotnet/`: The .NET 8 Web API application.
 - `frontend/`: The Vue 3 application.
 
 ```
@@ -92,6 +93,7 @@ The project is a monorepo with two main packages:
 
 - **Frontend (Vue App)**: `http://localhost:5173`
 - **Backend (FastAPI Docs)**: `http://localhost:8000/docs`
+- **Backend (.NET API Docs)**: `http://localhost:8001/swagger`
 - **PostgreSQL Database**: Port `5432`
 - **Redis**: Port `6379`
 
@@ -100,6 +102,9 @@ The backend will automatically create the database tables and a default user wit
 - **Password**: `password`
 
 The frontend is pre-configured to send requests with `X-User-Id: 1` in the headers to simulate this user being logged in.
+
+#### .NET Backend Note
+The .NET backend uses the `EnsureCreated()` method to initialize the database schema in the development environment. This is a workaround because the `dotnet ef migrations` command is not available in the execution environment. For production use, you should generate proper migrations manually.
 
 ## Development
 

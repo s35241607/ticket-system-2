@@ -55,6 +55,22 @@ services:
     volumes:
       - redis_data:/data
 
+  backend_dotnet:
+    build:
+      context: ./backend_dotnet
+      dockerfile: Dockerfile
+    container_name: ticket_system_backend_dotnet
+    env_file:
+      - .env
+    environment:
+      - "ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};"
+    volumes:
+      - ./backend_dotnet:/source
+    ports:
+      - "8001:8080" # Exposing on host 8001, container runs on 8080 by default
+    depends_on:
+      - postgres
+
   # Optional Kafka setup
   # zookeeper:
   #   image: confluentinc/cp-zookeeper:7.0.1

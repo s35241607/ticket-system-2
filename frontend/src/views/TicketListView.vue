@@ -1,6 +1,12 @@
 <template>
   <v-card>
-    <v-card-title>Tickets</v-card-title>
+    <v-card-title class="d-flex justify-space-between align-center">
+      <span>Tickets</span>
+      <v-btn color="primary" @click="dialog = true">
+        <v-icon left>mdi-plus</v-icon>
+        New Ticket
+      </v-btn>
+    </v-card-title>
     <v-card-text>
       <v-data-table
         :headers="headers"
@@ -16,14 +22,22 @@
       </v-data-table>
     </v-card-text>
   </v-card>
+
+  <create-ticket-dialog
+    v-model="dialog"
+    @ticket-created="handleTicketCreated"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import apiClient from '@/api';
+import CreateTicketDialog from '@/components/CreateTicketDialog.vue';
 
 const loading = ref(true);
 const tickets = ref([]);
+const dialog = ref(false);
+
 const headers = ref([
   { title: 'ID', key: 'id', align: 'start' },
   { title: 'Title', key: 'title' },
@@ -33,7 +47,7 @@ const headers = ref([
   { title: 'Created At', key: 'created_at' },
 ]);
 
-onMounted(async () => {
+const fetchTickets = async () => {
   loading.value = true;
   try {
     const response = await apiClient.getTickets();
@@ -44,7 +58,16 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
-});
+};
+
+onMounted(fetchTickets);
+
+const handleTicketCreated = (newTicket) => {
+  // Option 1: Add to the list directly (more responsive)
+  tickets.value.push(newTicket);
+  // Option 2: Re-fetch the whole list
+  // fetchTickets();
+};
 
 const getStatusColor = (status) => {
   switch (status) {

@@ -14,7 +14,9 @@ export default {
   getTickets() {
     return apiClient.get('/api/v1/tickets/');
   },
+  createTicket(ticketData) {
+    return apiClient.post('/api/v1/tickets/', ticketData);
+  },
   // Add other ticket-related API calls here
-  // createTicket(data) { ... }
   // getTicket(id) { ... }
 };

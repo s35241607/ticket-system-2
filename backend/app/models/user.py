@@ -11,4 +11,5 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
 
-    tickets = relationship("Ticket", back_populates="owner", foreign_keys="[Ticket.owner_id]")
+    owned_tickets = relationship("Ticket", back_populates="owner", foreign_keys="[Ticket.owner_id]")
+    approved_tickets = relationship("Ticket", back_populates="approver", foreign_keys="[Ticket.approver_id]")

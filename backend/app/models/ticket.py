@@ -24,13 +24,11 @@ class Ticket(Base):
     status = Column(Enum(TicketStatus), default=TicketStatus.OPEN, nullable=False)
     priority = Column(Enum(TicketPriority), default=TicketPriority.MEDIUM, nullable=False)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
 
     owner_id = Column(Integer, ForeignKey("users.id"))
-    owner = relationship("User", back_populates="tickets")
+    owner = relationship("User", foreign_keys=[owner_id], back_populates="owned_tickets")
 
-    # This would be more complex in a real system, with a separate approval table
-    # For this example, we'll keep it simple.
     approver_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    approver = relationship("User", foreign_keys=[approver_id])
+    approver = relationship("User", foreign_keys=[approver_id], back_populates="approved_tickets")

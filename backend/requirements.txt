@@ -14,6 +14,7 @@ pydantic-settings
 # Security
 python-jose[cryptography]
 passlib[bcrypt]
+python-multipart
 
 # Linters & Formatters
 black
